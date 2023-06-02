@@ -18,4 +18,7 @@
 
 </section>
 
+<x-sidebar></x-sidebar>
+
+
 </x-app-layout>
