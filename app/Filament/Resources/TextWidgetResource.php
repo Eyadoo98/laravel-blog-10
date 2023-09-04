@@ -21,6 +21,10 @@ class TextWidgetResource extends Resource
 
     protected static ?string $navigationGroup = 'Content';
 
+    public static function canViewAny(): bool{ //for hide resource from navigation
+        return false;
+    }
+
     public static function form(Form $form): Form
     {
         return $form

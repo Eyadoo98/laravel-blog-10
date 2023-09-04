@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\blogResource;
 use App\Models\Post;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -14,13 +15,14 @@ class PostController extends Controller
      */
     public function index(): View
     {
-        $posts = Post::query()
-            ->where('active', true)
-            ->whereDate('publish_at', '<', Carbon::now())
-            ->orderBy('publish_at', 'desc')
-            ->paginate(5);
-
-        return view('home',['posts' => $posts]);
+//        $posts = Post::query()
+//            ->where('active', true)
+//            ->whereDate('publish_at', '<', Carbon::now())
+//            ->orderBy('publish_at', 'desc')
+//            ->paginate(5);
+//
+//        return view('home',['posts' => $posts]);
+        return view('livewire.layouts.master');
     }
 
     /**
@@ -69,5 +71,11 @@ class PostController extends Controller
     public function destroy(Post $post)
     {
         //
+    }
+
+    public function getBlogPosts()
+    {
+        $posts = Post::query()->select('id','title', 'thumbnail')->get();
+        return  blogResource::collection($posts);
     }
 }

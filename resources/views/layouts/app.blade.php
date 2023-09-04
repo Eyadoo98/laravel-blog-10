@@ -14,7 +14,22 @@
         @import url('https://fonts.googleapis.com/css?family=Karla:400,700&display=swap');
 
         .font-family-karla {
-            font-family: karla;
+            /*font-family: url('fonts/Readex_Pro/OFL.txt');*/
+        }
+        @font-face {
+            font-family: readexPro;
+            src: url('/fonts/Readex_Pro/static/ReadexPro-VariableFont_HEXP,wght.ttf');
+        }
+        body {
+            font-family: readexPro !important;
+        }
+        @font-face {
+            font-family: readexProBold;
+            src: url('/fonts/Readex_Pro/static/ReadexPro-Bold.ttf');
+        }
+        @font-face {
+            font-family: readexProLight;
+            src: url('/fonts/Readex_Pro/static/ReadexPro-Light.ttf');
         }
     </style>
 
@@ -34,6 +49,7 @@
             });
         });
     </script>
+    @livewireStyles
 
 </head>
 
@@ -73,69 +89,34 @@
     @endphp
     <!-- Text Header -->
     <header class="w-full container mx-auto">
-        <div class="flex flex-col items-center py-12">
-            <a class="font-bold text-gray-800 uppercase hover:text-gray-700 text-5xl" href="#">
-                Project Blog Make By Eyad Jafar
-            </a>
-            <p class="text-lg text-gray-600">
-                {{ TextWidget::getTitle('header') }}
-                This Website made with filament , tailwind , alpinejs , laravel , livewire
-            </p>
-        </div>
+{{--        <div class="flex flex-col items-center py-12">--}}
+{{--            <a class="font-bold text-gray-800 uppercase hover:text-gray-700 text-5xl" href="#">--}}
+{{--                Project Blog Make By Eyad Jafar--}}
+{{--            </a>--}}
+{{--            <p class="text-lg text-gray-600">--}}
+{{--                {{ TextWidget::getTitle('header') }}--}}
+{{--                This Website made with filament , tailwind , alpinejs , laravel , livewire--}}
+{{--            </p>--}}
+{{--        </div>--}}
+
+
     </header>
 
-    <!-- Topic Nav -->
-    <nav class="w-full py-4 border-t border-b bg-gray-100" x-data="{ open: false }">
-        <div class="block sm:hidden">
-            <a href="#"
-                class="block md:hidden text-base font-bold uppercase text-center flex justify-center items-center"
-                @click="open = !open">
-                Topics <i :class="open ? 'fa-chevron-down' : 'fa-chevron-up'" class="fas ml-2"></i>
-            </a>
-        </div>
-        <div :class="open ? 'block' : 'hidden'" class="w-full flex-grow sm:flex sm:items-center sm:w-auto">
-            <div
-                class="w-full container mx-auto flex flex-col sm:flex-row items-center justify-center text-sm font-bold uppercase mt-0 px-6 py-2">
-                <a href="#" class="hover:bg-gray-400 rounded py-2 px-4 mx-2">Technology</a>
-                <a href="#" class="hover:bg-gray-400 rounded py-2 px-4 mx-2">Automotive</a>
-                <a href="#" class="hover:bg-gray-400 rounded py-2 px-4 mx-2">Finance</a>
-                <a href="#" class="hover:bg-gray-400 rounded py-2 px-4 mx-2">Politics</a>
-                <a href="#" class="hover:bg-gray-400 rounded py-2 px-4 mx-2">Culture</a>
-                <a href="#" class="hover:bg-gray-400 rounded py-2 px-4 mx-2">Sports</a>
-            </div>
-        </div>
-    </nav>
+    <div style="font-family: 'readexProBold';">
+        @include('layouts.navbar')
+    </div>
 
+    {{ $slot }}
+
+    <x-sidebar></x-sidebar>
 
     <div class="container mx-auto flex flex-wrap py-6">
-        {{-- <div class="md:px-16"> --}}
-        {{ $slot }}
-        {{-- </div> --}}
-
-        {{-- <div class="w-full bg-white shadow flex flex-col my-4 p-6">
-                <p class="text-xl font-semibold pb-5">Instagram</p>
-                <div class="grid grid-cols-3 gap-3">
-                    <img class="hover:opacity-75" src="https://source.unsplash.com/collection/1346951/150x150?sig=1">
-                    <img class="hover:opacity-75" src="https://source.unsplash.com/collection/1346951/150x150?sig=2">
-                    <img class="hover:opacity-75" src="https://source.unsplash.com/collection/1346951/150x150?sig=3">
-                    <img class="hover:opacity-75" src="https://source.unsplash.com/collection/1346951/150x150?sig=4">
-                    <img class="hover:opacity-75" src="https://source.unsplash.com/collection/1346951/150x150?sig=5">
-                    <img class="hover:opacity-75" src="https://source.unsplash.com/collection/1346951/150x150?sig=6">
-                    <img class="hover:opacity-75" src="https://source.unsplash.com/collection/1346951/150x150?sig=7">
-                    <img class="hover:opacity-75" src="https://source.unsplash.com/collection/1346951/150x150?sig=8">
-                    <img class="hover:opacity-75" src="https://source.unsplash.com/collection/1346951/150x150?sig=9">
-                </div>
-                <a href="#"
-                    class="w-full bg-blue-800 text-white font-bold text-sm uppercase rounded hover:bg-blue-700 flex items-center justify-center px-2 py-3 mt-6">
-                    <i class="fab fa-instagram mr-2"></i> Follow @dgrzyb
-                </a>
-            </div> --}}
 
         </aside>
 
     </div>
 
-    <footer class="w-full border-t bg-white pb-12">
+    <footer class="w-full">
         {{-- <div class="relative w-full flex items-center invisible md:visible md:pb-12" x-data="getCarouselData()">
             <button
                 class="absolute bg-blue-800 hover:bg-blue-700 text-white text-2xl font-bold hover:shadow rounded-full w-16 h-16 ml-12"
@@ -151,15 +132,15 @@
                 &#8594;
             </button>
         </div> --}}
-        <div class="w-full container mx-auto flex flex-col items-center">
-            <div class="flex flex-col md:flex-row text-center md:text-left md:justify-between py-6">
-                {{-- <a href="#" class="uppercase px-3">About Us</a>
-                <a href="#" class="uppercase px-3">Privacy Policy</a>
-                <a href="#" class="uppercase px-3">Terms & Conditions</a>
-                <a href="#" class="uppercase px-3">Contact Us</a> --}}
-            </div>
-            <div class="uppercase py-6">&copy; myblog.com</div>
-        </div>
+{{--        <div class="w-full container mx-auto flex flex-col items-center">--}}
+{{--            <div class="flex flex-col md:flex-row text-center md:text-left md:justify-between py-6">--}}
+{{--                --}}{{-- <a href="#" class="uppercase px-3">About Us</a>--}}
+{{--                <a href="#" class="uppercase px-3">Privacy Policy</a>--}}
+{{--                <a href="#" class="uppercase px-3">Terms & Conditions</a>--}}
+{{--                <a href="#" class="uppercase px-3">Contact Us</a> --}}
+{{--            </div>--}}
+{{--            <div class="uppercase py-6">&copy; myblog.com</div>--}}
+{{--        </div>--}}
     </footer>
 
     {{-- <script>
@@ -186,6 +167,12 @@
             }
         }
     </script> --}}
+
+    @include('components.create-cv-section')
+    @include('components.download-section')
+    @include('components.footer')
+
+@livewireScripts
 
 </body>
 

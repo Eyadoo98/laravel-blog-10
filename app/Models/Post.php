@@ -7,15 +7,29 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Support\Str;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 
 class Post extends Model
 {
     use HasFactory;
 
-    protected $guarded = [];
+
+//    protected $guarded = [];
+
+    protected $fillable = [
+        'title',
+        'slug',
+        'body',
+        'thumbnail',
+        'publish_at',
+        'active',
+        'user_id'
+    ];
 
     protected $casts = [
-        'publish_at' => 'datetime'
+        'publish_at' => 'datetime',
+//        'thumbnail' => 'array'
     ];
 
     public function categories():BelongsToMany
@@ -45,5 +59,6 @@ class Post extends Model
             return $this->thumbnail;
         }
         return 'storage/'.$this->thumbnail;
+
     }
 }

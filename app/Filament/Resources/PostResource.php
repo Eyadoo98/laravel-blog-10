@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\PostResource\Pages;
 use App\Filament\Resources\PostResource\RelationManagers;
+use App\Models\Category;
 use App\Models\Post;
 use Closure;
 use Filament\Forms;
@@ -14,8 +15,11 @@ use Filament\Resources\Resource;
 use Filament\Resources\Table;
 use Filament\Tables;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Str;
+use Filament\Forms\Components\FileUpload;
+use FilamentTiptapEditor\TiptapEditor;
 
 class PostResource extends Resource
 {
@@ -24,6 +28,8 @@ class PostResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
 
     protected static ?string $navigationGroup = 'Content'; //for make resource in group navigation
+
+    protected static ?int $navigationSort = 2;
 
     public static function form(Form $form): Form
     {
@@ -45,19 +51,62 @@ class PostResource extends Resource
                                     ->maxLength(2048),
                             ]),
 
-                        Forms\Components\RichEditor::make('body')
+//                        Forms\Components\RichEditor::make('body')
+//                            ->required(),
+
+                        TiptapEditor::make('body')
+//                            ->profile('default|simple|barebone|custom')
+//                            ->tools([]) // individual tools to use in the editor, overwrites profile
+//                            ->disk('string') // optional, defaults to config setting
+//                            ->directory('string or Closure returning a string') // optional, defaults to config setting
+//                            ->acceptedFileTypes(['array of file types']) // optional, defaults to config setting
+//                            ->output('json') // optional, change the output format. defaults is html
+//                            ->maxContentWidth('5xl')
+                            ->extraInputAttributes(
+                                [
+                                    'style' => 'direction:rtl;',
+                                ]
+                            )
+                            ->tools(
+                                [
+
+                                    'heading',
+                                    'bold',
+                                    'italic',
+                                    'link',
+                                    'bullet-list',
+                                    'ordered-list',
+                                    'hr',
+                                    'bold',
+                                    'italic',
+                                    'strike',
+                                    'underline',
+                                    'superscript',
+                                    'subscript',
+                                    'color',
+                                    'align-left',
+                                    'align-center',
+                                    'align-right',
+                                    'link',
+                                    'media',
+                                ]
+                            )
                             ->required(),
+
                         Forms\Components\Toggle::make('active')
                             ->required(),
-                        Forms\Components\DateTimePicker::make('publish_at'),
+                        Forms\Components\DatePicker::make('publish_at'),
                     ])->columnSpan(8),
 
                 Card::make()
                     ->schema([
-                        Forms\Components\FileUpload::make('thumbnail'),
+                        FileUpload::make('thumbnail')->disk('custom')->directory('images'),
                         Forms\Components\Select::make('category_id')
                             ->multiple()
                             ->relationship('categories', 'title')
+                            ->options(
+                                Category::all()->pluck('title', 'id')
+                            )
                             ->required(),
                     ])->columnSpan(4),
 
@@ -68,7 +117,7 @@ class PostResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\ImageColumn::make('thumbnail'),
+                Tables\Columns\ImageColumn::make('thumbnail')->disk('custom'),
                 Tables\Columns\TextColumn::make('title'),
                 Tables\Columns\IconColumn::make('active')
                     ->boolean(),
